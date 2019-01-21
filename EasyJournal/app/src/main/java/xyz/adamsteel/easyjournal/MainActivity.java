@@ -7,8 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.net.Uri;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
 
@@ -19,14 +20,13 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    Log.d("test", "test");
+                    //mTextMessage.setText(R.string.title_journal);
+                    Log.d("EJLOGS", "Changed to home tab");
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+
+                case R.id.navigation_settings:
+                    //mTextMessage.setText(R.string.title_settings);
+                    Log.d("EJLOGS", "Changed to settings tab");
                     return true;
             }
             return false;
@@ -42,5 +42,10 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
+        @Override
+        public void onFragmentInteraction(Uri uri){
+
+        }
 
 }
