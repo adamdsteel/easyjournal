@@ -1,6 +1,7 @@
 package xyz.adamsteel.easyjournal;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import java.util.ArrayList;
+
+import xyz.adamsteel.easyjournal.ESQLiteHelper;
 
 
 /**
@@ -45,6 +48,8 @@ public class EntriesFragment extends Fragment {
     private ArrayList<String> contentList; //The text entries for the journal.
     private TextInputEditText inputEditText; //The text box the user types their entries in.
     private Button sendButton; //The send button.
+    private SQLiteDatabase eDatabase; //The main database for journal entries.
+    ESQLiteHelper dbHelper; //The database helper.
 
     public EntriesFragment() {
         // Required empty public constructor
@@ -79,8 +84,27 @@ public class EntriesFragment extends Fragment {
         }
 
 
-        //
 
+        //Set up the database
+        dbHelper = new ESQLiteHelper(getContext());
+        dbHelper.getWritableDatabase();
+
+        testSQL();
+
+
+        //eDatabase = SQLiteDatabase.openOrCreateDatabase("entriesdb", null, null);
+        //Database.execSQL("CREATE TABLE IF NOT EXISTS Entries(_id INTEGER PRIMARY KEY, entry TEXT, timestamp TEXT, PRIMARY KEY (ID) );");
+
+        //String toInsert = "Test entry";
+        //eDatabase.execSQL(" INSERT INTO Entries(entry, timestamp) VALUES(" + toInsert + ", CURRENT_TIMESTAMP);");
+
+
+        // CREATE TABLE IF NOT EXISTS enries(
+        //  entryid INT,
+        //  timestampt time,
+        //  entry VARCHAR,
+        //  PRIMARY KEY (entryid)
+        //  );
     }
 
     @Override
@@ -128,8 +152,10 @@ public class EntriesFragment extends Fragment {
 
                 String entryText = inputEditText.getText().toString(); //Gets the text from the input text box and converts it to a String.
 
+                //Update the on-disk database:
+                dbHelper.addEntry(entryText);
 
-
+                //Update the in-memory list:
                 contentList.add(entryText);
                 //inputEditText.clearComposingText();
                 inputEditText.setText("");
@@ -142,6 +168,8 @@ public class EntriesFragment extends Fragment {
 
             }
         });
+
+
 
 
         //Listener for the text box being changed:
@@ -166,6 +194,12 @@ public class EntriesFragment extends Fragment {
 
 
     }
+
+    public void testSQL(){
+        dbHelper.getWritableDatabase();
+        dbHelper.getReadableDatabase();
+        dbHelper.dumpEntries();
+    };
 
     //Greys out the send button depending on if the text box is empty or not:
     public void setButton()
