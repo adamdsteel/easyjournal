@@ -9,9 +9,11 @@ import android.view.View;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder> {
 
-    private String[] eDataSet;
+    private ArrayList<String> eDataSet;
 
     public static class EasyViewHolder extends RecyclerView.ViewHolder{
 
@@ -24,7 +26,7 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
         }
     }
 
-    public EasyAdapter(String[] dataSet){
+    public EasyAdapter(ArrayList<String> dataSet){
         eDataSet = dataSet;
     }
 
@@ -49,15 +51,13 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
 
     @Override
     public void onBindViewHolder(EasyViewHolder holder, int position){
-        //holder.eTextView.setText(eDataSet[position]);
-        //TODO: Add the text to the textview inside eview
 
         TextView txView = holder.eView.findViewById(R.id.item_text_view);
-        txView.setText(eDataSet[position]);
+        txView.setText(eDataSet.get(position));
     }
 
     @Override
     public int getItemCount(){
-        return eDataSet.length;
+        return eDataSet.size();
     }
 }

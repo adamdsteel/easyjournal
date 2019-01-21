@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.net.Uri;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener {
 
@@ -47,5 +48,7 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
         public void onFragmentInteraction(Uri uri){
 
         }
+
+    //When the user taps the send button to add their entry:
 
 }
