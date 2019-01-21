@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 
 public class ESQLiteHelper extends SQLiteOpenHelper {
 
@@ -56,6 +58,30 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
         cValues.put("timestamp", "CURRENT_TIMESTAMP");
 
         eDBase.insert(MAIN_TABLE_NAME, null, cValues);
+    }
+
+    //Retrives the most recent entries in the database. Count = how many.
+    public ArrayList<String> retrieveLastEntries(int count){
+
+        ArrayList<String> lastEntries = new ArrayList<String>(count);
+
+        SQLiteDatabase eDBase = this.getReadableDatabase();
+
+        Cursor eCursor = eDBase.query("Entries", null, null, null, null, null, "_id DESC", Integer.toString(count)); //Gets everything in the Entries table.
+
+        eCursor.moveToLast(); //Flipped it to go backwards as the descending order of the selection makes them come out backwards.
+
+        Log.d("EJLogs", "Attempting to retrieve entries... count: " + eCursor.getCount());
+
+        do {
+            Log.d("EJLogs", eCursor.getString(1));
+
+            lastEntries.add(eCursor.getString(1));
+        }
+        while(eCursor.moveToPrevious());
+
+
+        return lastEntries;
     }
 
 

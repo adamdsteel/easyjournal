@@ -119,12 +119,15 @@ public class EntriesFragment extends Fragment {
         final int TEST_LENGTH = 100;
         //String[] testContent = new String[TEST_LENGTH];// {"Entry one", "Entry two", "Entry three", "Entry four", "Entry five", "Entry six", };
 
-        contentList = new ArrayList<String>(TEST_LENGTH);
+        //contentList = new ArrayList<String>(100);
 
+        /*
         for(int i = 0; i < TEST_LENGTH; i++){
             //testContent[i] = "Test message number " + Integer.toString(i + 1);
             contentList.add("Test message number " + Integer.toString(i + 1));
         }
+        */
+        contentList = dbHelper.retrieveLastEntries(100);
 
         eRecyclerView = (RecyclerView)mView.findViewById(R.id.entries_recycler_view);
         eLayoutManager = new LinearLayoutManager(getContext());
@@ -133,7 +136,10 @@ public class EntriesFragment extends Fragment {
         eAdapter = new EasyAdapter(contentList);
         eRecyclerView.setAdapter(eAdapter);
 
+        eAdapter.notifyDataSetChanged(); //So it updates with the data loaded from the database aboce.
+
         inputEditText = (TextInputEditText)mView.findViewById(R.id.inputBox);
+
 
         //Scroll the message view to the bottom item:
         eRecyclerView.scrollToPosition(contentList.size() - 1);
@@ -142,7 +148,6 @@ public class EntriesFragment extends Fragment {
         sendButton = (Button) mView.findViewById(R.id.send_button);
         setButton(); //Grey out the button.
         sendButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Log.d("EJLOGS", "Send button tapped - from EntriesFragment");
