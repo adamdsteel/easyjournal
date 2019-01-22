@@ -141,9 +141,25 @@ public class EntriesFragment extends Fragment {
 
         inputEditText = (TextInputEditText)mView.findViewById(R.id.inputBox);
 
-
         //Scroll the message view to the bottom item:
         eRecyclerView.scrollToPosition(contentList.size() - 1);
+
+        //Scroll the message view to the bottom whenever input box gains focus.
+        //Yes, somehow it really is this complicated.
+        eRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, final int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom){
+                if (bottom < oldBottom) {
+                    eRecyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            eRecyclerView.smoothScrollToPosition(bottom);
+                        }
+                    }, 100);
+                }
+            }
+        });
 
         //Setting up the send button:
         sendButton = (Button) mView.findViewById(R.id.send_button);
