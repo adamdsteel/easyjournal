@@ -85,8 +85,11 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
         Log.d("EJLogs", "Attempting to retrieve entries... count: " + eCursor.getCount());
 
+        if (eCursor.getCount() < 1)
+            return lastEntries; //If this isn't here, the app will crash on its first use*[1], as the cursor is empty
+
         do {
-            Log.d("EJLogs", eCursor.getString(1));
+            Log.d("EJLogs", eCursor.getString(1)); //*here[1]
 
             lastEntries.add(new Entry(eCursor.getInt(0), eCursor.getString(1)));
         }
