@@ -9,6 +9,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import xyz.adamsteel.easyjournal.Entry;
+
 
 public class ESQLiteHelper extends SQLiteOpenHelper {
 
@@ -48,7 +50,8 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addEntry(String entry){
+    //Adds an entry to the database and returns the _id / number of the entry.
+    public int addEntry(String entry){
         Log.d("EJLogs", "Attempting to add entry");
         String toInsert = "Test entry";
         SQLiteDatabase eDBase = this.getWritableDatabase();
@@ -58,12 +61,21 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
         cValues.put("timestamp", "CURRENT_TIMESTAMP");
 
         eDBase.insert(MAIN_TABLE_NAME, null, cValues);
+
+        //Getting the count:
+
+        String[] columns = {"_id"};
+
+        Cursor eCursor = eDBase.query("Entries", columns, null, null, null, null, "_id DESC", Integer.toString(1)); //Gets the most recent entry from the table.
+        eCursor.moveToFirst();
+        Log.d("EJLogs", "_id of that entry: " + eCursor.getInt(0));
+        return eCursor.getInt(0);
     }
 
     //Retrives the most recent entries in the database. Count = how many.
-    public ArrayList<String> retrieveLastEntries(int count){
+    public ArrayList<Entry> retrieveLastEntries(int count){
 
-        ArrayList<String> lastEntries = new ArrayList<String>(count);
+        ArrayList<Entry> lastEntries = new ArrayList<Entry>(count);
 
         SQLiteDatabase eDBase = this.getReadableDatabase();
 
@@ -76,7 +88,7 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
         do {
             Log.d("EJLogs", eCursor.getString(1));
 
-            lastEntries.add(eCursor.getString(1));
+            lastEntries.add(new Entry(eCursor.getInt(0), eCursor.getString(1)));
         }
         while(eCursor.moveToPrevious());
 

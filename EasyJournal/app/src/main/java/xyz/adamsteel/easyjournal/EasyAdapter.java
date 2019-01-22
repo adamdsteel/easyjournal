@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder> {
 
-    private ArrayList<String> eDataSet;
+    private ArrayList<Entry> eDataSet;
 
     public static class EasyViewHolder extends RecyclerView.ViewHolder{
 
@@ -26,7 +26,8 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
         }
     }
 
-    public EasyAdapter(ArrayList<String> dataSet){
+    public EasyAdapter(ArrayList<Entry> dataSet){
+
         eDataSet = dataSet;
     }
 
@@ -53,7 +54,8 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
     public void onBindViewHolder(EasyViewHolder holder, int position){
 
         TextView txView = holder.eView.findViewById(R.id.item_text_view);
-        txView.setText(eDataSet.get(position));
+        txView.setText(eDataSet.get(position).text);
+        txView.append(" [id: " + eDataSet.get(position).id + "]");
     }
 
     @Override

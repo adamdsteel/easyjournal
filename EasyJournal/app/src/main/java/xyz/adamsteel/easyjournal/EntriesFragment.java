@@ -18,6 +18,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import xyz.adamsteel.easyjournal.ESQLiteHelper;
+import xyz.adamsteel.easyjournal.Entry;
 
 
 /**
@@ -45,7 +46,7 @@ public class EntriesFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     //--
-    private ArrayList<String> contentList; //The text entries for the journal.
+    private ArrayList<Entry> contentList; //The text entries for the journal.
     private TextInputEditText inputEditText; //The text box the user types their entries in.
     private Button sendButton; //The send button.
     private SQLiteDatabase eDatabase; //The main database for journal entries.
@@ -158,10 +159,10 @@ public class EntriesFragment extends Fragment {
                 String entryText = inputEditText.getText().toString(); //Gets the text from the input text box and converts it to a String.
 
                 //Update the on-disk database:
-                dbHelper.addEntry(entryText);
+                int entryCount = dbHelper.addEntry(entryText);
 
                 //Update the in-memory list:
-                contentList.add(entryText);
+                contentList.add( new Entry(entryCount, entryText));
                 //inputEditText.clearComposingText();
                 inputEditText.setText("");
 
