@@ -19,10 +19,15 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "EntriesDB";
     private static final String MAIN_TABLE_NAME = "Entries";
-    //private static final String
+
+    private int earliestLoadedEntryId;
+
 
     public ESQLiteHelper(Context context){
+
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        earliestLoadedEntryId = Integer.MAX_VALUE; //TODO: We actually need to set this to start off as the maximum value of _id + 1;
     }
 
     @Override
@@ -73,13 +78,13 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
     }
 
     //Retrives the most recent entries in the database. Count = how many.
-    public ArrayList<Entry> retrieveLastEntries(int count){
+    public ArrayList<Entry> retrieveMoreEntries(int count){
 
         ArrayList<Entry> lastEntries = new ArrayList<Entry>(count);
 
         SQLiteDatabase eDBase = this.getReadableDatabase();
 
-        Cursor eCursor = eDBase.query("Entries", null, null, null, null, null, "_id DESC", Integer.toString(count)); //Gets everything in the Entries table.
+        Cursor eCursor = eDBase.query("Entries", null, "_id < " + earliestLoadedEntryId, null, null, null, "_id DESC", Integer.toString(count)); //Gets everything in the Entries table.
 
         eCursor.moveToLast(); //Flipped it to go backwards as the descending order of the selection makes them come out backwards.
 
@@ -89,9 +94,14 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
             return lastEntries; //If this isn't here, the app will crash on its first use*[1], as the cursor is empty
 
         do {
-            Log.d("EJLogs", eCursor.getString(1)); //*here[1]
+            //Log.d("EJLogs", eCursor.getString(1)); //*here[1]
+            int id = eCursor.getInt(0);
+            lastEntries.add(new Entry(id, eCursor.getString(1)));
 
-            lastEntries.add(new Entry(eCursor.getInt(0), eCursor.getString(1)));
+            if(id < earliestLoadedEntryId){
+                earliestLoadedEntryId = id;
+                //Keeping track of the topmost entry we've loaded.
+            }
         }
         while(eCursor.moveToPrevious());
 

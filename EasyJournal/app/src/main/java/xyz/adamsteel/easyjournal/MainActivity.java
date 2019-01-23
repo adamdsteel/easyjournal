@@ -13,8 +13,9 @@ import android.widget.TextView;
 import android.net.Uri;
 
 import xyz.adamsteel.easyjournal.dummy.DummyContent;
+import xyz.adamsteel.easyjournal.SettingsFragment;
 
-public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
 
     private TextView mTextMessage;
     private android.support.v7.app.ActionBar mainActionBar;
@@ -50,14 +51,12 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
 
     }
 
+
         @Override
         public void onFragmentInteraction(Uri uri){
 
         }
 
-        @Override
-        public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

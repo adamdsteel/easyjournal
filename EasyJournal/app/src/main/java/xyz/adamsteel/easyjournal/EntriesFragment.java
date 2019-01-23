@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import java.util.ArrayList;
 
-import xyz.adamsteel.easyjournal.ESQLiteHelper;
-import xyz.adamsteel.easyjournal.Entry;
+import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
 
 
 /**
@@ -29,6 +29,9 @@ import xyz.adamsteel.easyjournal.Entry;
  * Use the {@link EntriesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+//EntriesFragment is the fragment that displays the entries display list, and is responsible for keeping the SQL database and in-memory lists in sync.
+
 public class EntriesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,8 +39,8 @@ public class EntriesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView eRecyclerView;
-    private RecyclerView.Adapter eAdapter;
-    private RecyclerView.LayoutManager eLayoutManager;
+    private EasyAdapter eAdapter;
+    private android.support.v7.widget.LinearLayoutManager eLayoutManager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -51,6 +54,9 @@ public class EntriesFragment extends Fragment {
     private Button sendButton; //The send button.
     private SQLiteDatabase eDatabase; //The main database for journal entries.
     ESQLiteHelper dbHelper; //The database helper.
+    private final int INITIAL_LOAD_LENGTH = 100; //The number of recent messages to initially load.
+
+    private final int ENTRIES_TO_LOAD = INITIAL_LOAD_LENGTH;
 
     public EntriesFragment() {
         // Required empty public constructor
@@ -116,8 +122,7 @@ public class EntriesFragment extends Fragment {
 
         //Setting up our content:
 
-        //Some test content:
-        final int TEST_LENGTH = 100;
+
         //String[] testContent = new String[TEST_LENGTH];// {"Entry one", "Entry two", "Entry three", "Entry four", "Entry five", "Entry six", };
 
         //contentList = new ArrayList<String>(100);
@@ -128,7 +133,7 @@ public class EntriesFragment extends Fragment {
             contentList.add("Test message number " + Integer.toString(i + 1));
         }
         */
-        contentList = dbHelper.retrieveLastEntries(100);
+        contentList = dbHelper.retrieveMoreEntries(INITIAL_LOAD_LENGTH);
 
         eRecyclerView = (RecyclerView)mView.findViewById(R.id.entries_recycler_view);
         eLayoutManager = new LinearLayoutManager(getContext());
@@ -161,6 +166,39 @@ public class EntriesFragment extends Fragment {
             }
         });
 
+        //Setting up what to do when we need to load more data for the RecyclerView
+        eRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                ejLog("scroll state changed");
+
+
+                //int visibleEntryCount = eLayoutManager.getChildCount();
+                //int totalEntryCount = eLayoutManager.getItemCount();
+
+                Log.d("EJlogs", "first visible item pos: " + Integer.toString(eLayoutManager.findFirstVisibleItemPosition()) );
+
+                if(eLayoutManager.findFirstVisibleItemPosition() == 0) { //If we are scrolled to the first item...
+                    ejLog("Need to load more");
+
+                    int topEntryId = contentList.get(0).id; //The database id number of the earliest loaded entry.
+
+                    if(topEntryId != 0){ //If we haven't already loaded the earliest entry in the database...
+                        ArrayList<Entry> loadedEntries = dbHelper.retrieveMoreEntries(ENTRIES_TO_LOAD);
+
+
+                        loadedEntries.addAll(contentList);
+                        contentList = loadedEntries;
+                        eAdapter.updateData(contentList);
+
+                        eAdapter.notifyDataSetChanged(); //TODO: Keep scroll position when loading extra data.
+                    }
+                }
+            }
+        });
+
         //Setting up the send button:
         sendButton = (Button) mView.findViewById(R.id.send_button);
         setButton(); //Grey out the button.
@@ -179,6 +217,9 @@ public class EntriesFragment extends Fragment {
 
                 //Update the in-memory list:
                 contentList.add( new Entry(entryCount, entryText));
+
+
+
                 //inputEditText.clearComposingText();
                 inputEditText.setText("");
 
@@ -220,7 +261,7 @@ public class EntriesFragment extends Fragment {
     public void testSQL(){
         dbHelper.getWritableDatabase();
         dbHelper.getReadableDatabase();
-        dbHelper.dumpEntries();
+        //dbHelper.dumpEntries();
     };
 
     //Greys out the send button depending on if the text box is empty or not:

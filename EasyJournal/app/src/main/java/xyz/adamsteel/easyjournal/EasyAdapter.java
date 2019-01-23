@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder> {
 
-    private ArrayList<Entry> eDataSet;
+    private ArrayList<Entry> eDataSet; //The entries
 
     public static class EasyViewHolder extends RecyclerView.ViewHolder{
 
@@ -29,6 +29,14 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
     public EasyAdapter(ArrayList<Entry> dataSet){
 
         eDataSet = dataSet;
+    }
+
+    public void updateData(ArrayList<Entry> data){
+        eDataSet = data;
+    }
+
+    public void doSomething(){
+
     }
 
     @Override
@@ -55,11 +63,16 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
 
         TextView txView = holder.eView.findViewById(R.id.item_text_view);
         txView.setText(eDataSet.get(position).text);
-        txView.append(" [id: " + eDataSet.get(position).id + "]");
+
+        if(BuildConfig.DEBUG) {
+            txView.append(" [id: " + eDataSet.get(position).id + "]"); //Uncomment to show the id number of the entry at the end of it.
+        }
     }
 
     @Override
     public int getItemCount(){
         return eDataSet.size();
     }
+
+
 }
