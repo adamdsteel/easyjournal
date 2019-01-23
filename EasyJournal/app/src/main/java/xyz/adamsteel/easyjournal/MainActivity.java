@@ -1,5 +1,6 @@
 package xyz.adamsteel.easyjournal;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -41,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
         Log.d("EJLogs", "oncreate");
 
         LoadFragment(eFragment);
+
+        //First-run popup:
+        if(!hasRunBefore()){
+            onFirstRun();
+        }
 
     }
 
@@ -90,4 +96,23 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
         transaction.commit();
     }
 
+    //Checks if the app has run before.
+    private boolean hasRunBefore(){
+        SharedPreferences prefs = getSharedPreferences("xyz.adamsteel.EasyJournal", MODE_PRIVATE);
+        return prefs.getBoolean("appHasRunBefore", false); //Return false if value is false or if key doesn't exist.
+    }
+
+    //Anything we want to do the first time the app is run, such as the instructions\intro:
+    private void onFirstRun(){
+        Log.d("EJLogs", "App first run");
+
+        //Add the 'has run before' boolean to the shared preferences.
+        SharedPreferences prefs = getSharedPreferences("xyz.adamsteel.EasyJournal", MODE_PRIVATE);
+        prefs.edit().putBoolean("appHasRunBefore", true).commit();
+
+
+        //Showing first-run introduction popup:
+        //TODO: Implement this.
+
+    }
 }
