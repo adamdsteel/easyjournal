@@ -8,13 +8,24 @@
     tools:context=".SettingsFragment" >
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/appInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="An app by Adam Steel - adamsteel.xyz"
+        android:text="@string/app_info_text"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/bug_button_text"
+        android:onClick="emailDeveloper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appInfoTextView" />
 </android.support.constraint.ConstraintLayout>

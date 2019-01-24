@@ -1,5 +1,6 @@
 package xyz.adamsteel.easyjournal;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.view.View;
 import android.net.Uri;
 
 import xyz.adamsteel.easyjournal.dummy.DummyContent;
@@ -113,5 +115,13 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
         //Showing first-run introduction popup:
         //TODO: Implement this.
 
+    }
+
+    public void emailDeveloper(View view){
+        Intent contactIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "easyjournal@adamsteel.xyz", null));
+        contactIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.email_subject);
+        contactIntent.putExtra(Intent.EXTRA_TEXT, R.string.email_contents);
+
+        startActivity(contactIntent);
     }
 }
