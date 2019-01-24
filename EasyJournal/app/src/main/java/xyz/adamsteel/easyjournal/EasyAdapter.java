@@ -65,7 +65,7 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
         txView.setText(eDataSet.get(position).text);
 
         if(BuildConfig.DEBUG) {
-            txView.append(" [id: " + eDataSet.get(position).id + "]"); //Uncomment to show the id number of the entry at the end of it.
+            //txView.append(" [id: " + eDataSet.get(position).id + "]"); //Uncomment to show the id number of the entry at the end of it.
         }
     }
 
