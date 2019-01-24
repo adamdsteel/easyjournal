@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import xyz.adamsteel.easyjournal.Entry;
+import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
 
 
 public class ESQLiteHelper extends SQLiteOpenHelper {
@@ -99,7 +100,9 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
             lastEntries.add(new Entry(id, eCursor.getString(1)));
 
             if(id < earliestLoadedEntryId){
+
                 earliestLoadedEntryId = id;
+                ejLog("earliestLoadedEntryId = " + earliestLoadedEntryId );
                 //Keeping track of the topmost entry we've loaded.
             }
         }

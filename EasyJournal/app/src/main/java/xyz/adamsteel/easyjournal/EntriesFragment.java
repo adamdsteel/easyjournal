@@ -58,8 +58,11 @@ public class EntriesFragment extends Fragment {
 
     private final int ENTRIES_TO_LOAD = INITIAL_LOAD_LENGTH;
 
+    private boolean initialLoaded = false;
+
     public EntriesFragment() {
         // Required empty public constructor
+        ejLog("EntriesFragment constructor");
     }
 
 
@@ -96,22 +99,9 @@ public class EntriesFragment extends Fragment {
         dbHelper = new ESQLiteHelper(getContext());
         dbHelper.getWritableDatabase();
 
-        testSQL();
+        ejLog("******** EntriesFragment constructor ******* ");
+        //testSQL();
 
-
-        //eDatabase = SQLiteDatabase.openOrCreateDatabase("entriesdb", null, null);
-        //Database.execSQL("CREATE TABLE IF NOT EXISTS Entries(_id INTEGER PRIMARY KEY, entry TEXT, timestamp TEXT, PRIMARY KEY (ID) );");
-
-        //String toInsert = "Test entry";
-        //eDatabase.execSQL(" INSERT INTO Entries(entry, timestamp) VALUES(" + toInsert + ", CURRENT_TIMESTAMP);");
-
-
-        // CREATE TABLE IF NOT EXISTS enries(
-        //  entryid INT,
-        //  timestampt time,
-        //  entry VARCHAR,
-        //  PRIMARY KEY (entryid)
-        //  );
     }
 
     @Override
@@ -133,7 +123,12 @@ public class EntriesFragment extends Fragment {
             contentList.add("Test message number " + Integer.toString(i + 1));
         }
         */
-        contentList = dbHelper.retrieveMoreEntries(INITIAL_LOAD_LENGTH);
+
+        //Load the initial entries. However, if we've already loaded anything, this will cause a bug, so we only want to do this once:
+        if(initialLoaded == false) {
+            contentList = dbHelper.retrieveMoreEntries(INITIAL_LOAD_LENGTH);
+            initialLoaded = true;
+        }
 
         eRecyclerView = (RecyclerView)mView.findViewById(R.id.entries_recycler_view);
         eLayoutManager = new LinearLayoutManager(getContext());
@@ -172,13 +167,13 @@ public class EntriesFragment extends Fragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                ejLog("scroll state changed");
+                //ejLog("scroll state changed");
 
 
                 //int visibleEntryCount = eLayoutManager.getChildCount();
                 //int totalEntryCount = eLayoutManager.getItemCount();
 
-                Log.d("EJlogs", "first visible item pos: " + Integer.toString(eLayoutManager.findFirstVisibleItemPosition()) );
+                //Log.d("EJlogs", "first visible item pos: " + Integer.toString(eLayoutManager.findFirstVisibleItemPosition()) );
 
                 if(eLayoutManager.findFirstVisibleItemPosition() == 0) { //If we are scrolled to the first item...
                     ejLog("Need to load more");
@@ -188,11 +183,17 @@ public class EntriesFragment extends Fragment {
                     if(topEntryId != 0){ //If we haven't already loaded the earliest entry in the database...
                         ArrayList<Entry> loadedEntries = dbHelper.retrieveMoreEntries(ENTRIES_TO_LOAD);
 
-
+                        /*
                         loadedEntries.addAll(contentList);
                         contentList = loadedEntries;
                         eAdapter.updateData(contentList);
+                        */
 
+                        //We start at the end of loadedEntries and work backwards adding them to the top of contentList
+                        //We need to do it this way to get the correct order.
+                        for(int i = loadedEntries.size() - 1; i >= 0; i--){
+                            contentList.add(0, loadedEntries.get(i));
+                        }
                         eAdapter.notifyDataSetChanged(); //TODO: Keep scroll position when loading extra data.
                     }
                 }
