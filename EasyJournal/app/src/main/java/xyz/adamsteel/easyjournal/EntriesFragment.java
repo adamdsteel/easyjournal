@@ -32,7 +32,7 @@ import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
 
 //EntriesFragment is the fragment that displays the entries display list, and is responsible for keeping the SQL database and in-memory lists in sync.
 
-public class EntriesFragment extends Fragment {
+public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInteractor {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -134,7 +134,7 @@ public class EntriesFragment extends Fragment {
         eLayoutManager = new LinearLayoutManager(getContext());
         eRecyclerView.setLayoutManager(eLayoutManager);
 
-        eAdapter = new EasyAdapter(contentList);
+        eAdapter = new EasyAdapter(contentList, this);
         eRecyclerView.setAdapter(eAdapter);
 
         eAdapter.notifyDataSetChanged(); //So it updates with the data loaded from the database aboce.
@@ -311,5 +311,21 @@ public class EntriesFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void longPress(int id);
     }
+
+    @Override
+    public void onViewLongPressed(int dbID) {
+        //Accepts the database ID number as an argument, which we'll use on the database to delete the entry.
+        ejLog("EF - A view has been long tapped - db id number" + dbID);
+
+
+        dbHelper.deleteEntry(dbID); //TODO: Move this to only be called after a modal dialog confirms it. Obviously.
+
+        //Update the UI to show the deletion
+        //TODO - update UI
+        ((MainActivity)getContext()).longPress(dbID);
+    }
+
+
 }

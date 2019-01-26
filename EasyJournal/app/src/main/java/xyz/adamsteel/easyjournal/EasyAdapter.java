@@ -1,5 +1,7 @@
 package xyz.adamsteel.easyjournal;
 
+import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,16 +14,20 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
+import xyz.adamsteel.easyjournal.EntriesFragment;
 
 public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder> {
 
-    private ArrayList<Entry> eDataSet; //The entries
+    public ArrayList<Entry> eDataSet; //The entries
+    private EntriesFragment owningFragment;
 
-    public static class EasyViewHolder extends RecyclerView.ViewHolder{
+    public class EasyViewHolder extends RecyclerView.ViewHolder{
 
         //public TextView eTextView;
 
         public View eView;
+        public int idNumber; //TODO: Update this to use a getter and setter so it can be read but not written externally.
+
         public EasyViewHolder(View v){
             super(v);
             eView = v;
@@ -30,18 +36,30 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View clickedView) {
-                    ejLog("A view has been long tapped");
+                    ejLog("A view has been long tapped: db id number" + idNumber);
 
-                    //Now to find which view it is and show the deletion dialog:
+                    owningFragment.onViewLongPressed(idNumber);
+
+                    //Another way to call communicate with the fragment would be to get the fragment this way:
+                    /*
+                    MainActivity act = (MainActivity)clickedView.getContext()
+                    Fragment ef = act.eFragment;
+
+                    But for now we'll go with the interface method.
+                    */
+
                     return false;
                 }
             });
         }
     }
 
-    public EasyAdapter(ArrayList<Entry> dataSet){
+    //dataSet is the data such as the entry text, etc.
+    //We need the fragment so we can do things like call a method when an entry is long pressed.
+    public EasyAdapter(ArrayList<Entry> dataSet, EntriesFragment fragment){
 
         eDataSet = dataSet;
+        owningFragment = fragment;
     }
 
     public void updateData(ArrayList<Entry> data){
@@ -75,6 +93,7 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
     public void onBindViewHolder(EasyViewHolder holder, int position){
 
         TextView txView = holder.eView.findViewById(R.id.item_text_view);
+        holder.idNumber = eDataSet.get(position).id; //TODO: Check this is valid. Only works if there's one view per holder.
         txView.setText(eDataSet.get(position).text);
 
         //Setting a listener for long presses
@@ -90,5 +109,9 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
         return eDataSet.size();
     }
 
+
+    public interface AdapterInteractor{
+        void onViewLongPressed(int adapterNumber);
+    }
 
 }

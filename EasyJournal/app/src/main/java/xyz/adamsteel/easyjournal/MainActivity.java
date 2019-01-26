@@ -64,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
 
         }
 
+        @Override
+        public void longPress(int id){
+
+        }
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
