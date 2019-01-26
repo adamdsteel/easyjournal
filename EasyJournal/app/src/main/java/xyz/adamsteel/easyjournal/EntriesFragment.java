@@ -324,7 +324,7 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
 
         //Update the UI to show the deletion
         //TODO - update UI
-        ((MainActivity)getContext()).longPress(dbID);
+        ((MainActivity)getContext()).longPress(dbID); //We alert the activity because the activity has to show the modal dialog.
     }
 
 
