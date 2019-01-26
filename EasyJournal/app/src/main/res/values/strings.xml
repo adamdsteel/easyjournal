@@ -15,7 +15,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="app_info_text">EasyJournal - An app by Adam Steel.\nEasyJournal is the journal app that works like a chat app. Just send your thoughts like a message.
-    Your information is yours - it's kept on your device (backup features coming soon).
+    <string name="app_info_text">EasyJournal - An app by Adam Steel.\n\nEasyJournal is the journal app that works like a chat app. Just send your thoughts like a message.
+    \n\nYour information is yours - it\'s kept on your device (backup features coming soon).
     </string>
 </resources>

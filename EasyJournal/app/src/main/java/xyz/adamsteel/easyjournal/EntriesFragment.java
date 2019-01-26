@@ -161,6 +161,9 @@ public class EntriesFragment extends Fragment {
             }
         });
 
+        //Setting up a long press listener for the recyclerview:
+        //eRecyclerView.addOnItemTouchListener()
+
         //Setting up what to do when we need to load more data for the RecyclerView
         eRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -173,7 +176,7 @@ public class EntriesFragment extends Fragment {
                 //int visibleEntryCount = eLayoutManager.getChildCount();
                 //int totalEntryCount = eLayoutManager.getItemCount();
 
-                //Log.d("EJlogs", "first visible item pos: " + Integer.toString(eLayoutManager.findFirstVisibleItemPosition()) );
+                //ejLog( "first visible item pos: " + Integer.toString(eLayoutManager.findFirstVisibleItemPosition()) );
 
                 if(eLayoutManager.findFirstVisibleItemPosition() == 0) { //If we are scrolled to the first item...
                     ejLog("Need to load more");
@@ -206,7 +209,7 @@ public class EntriesFragment extends Fragment {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("EJLOGS", "Send button tapped - from EntriesFragment");
+                ejLog( "Send button tapped - from EntriesFragment");
 
                 //Add the entry to the database and the view:
 

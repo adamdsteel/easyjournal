@@ -11,6 +11,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
+
 public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder> {
 
     private ArrayList<Entry> eDataSet; //The entries
@@ -23,6 +25,17 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
         public EasyViewHolder(View v){
             super(v);
             eView = v;
+
+            //Setting an onLongClickListener so we can allow deletion of an entry:
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View clickedView) {
+                    ejLog("A view has been long tapped");
+
+                    //Now to find which view it is and show the deletion dialog:
+                    return false;
+                }
+            });
         }
     }
 
@@ -63,6 +76,9 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
 
         TextView txView = holder.eView.findViewById(R.id.item_text_view);
         txView.setText(eDataSet.get(position).text);
+
+        //Setting a listener for long presses
+
 
         if(BuildConfig.DEBUG) {
             //txView.append(" [id: " + eDataSet.get(position).id + "]"); //Uncomment to show the id number of the entry at the end of it.

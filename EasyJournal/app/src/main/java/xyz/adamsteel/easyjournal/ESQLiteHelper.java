@@ -33,7 +33,7 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase eDBase){
-        Log.d("EJLogs", "ESQLiteHelper oncreate running");
+        ejLog( "ESQLiteHelper oncreate running");
 
 
         String createTable = "CREATE TABLE Entries(_id INTEGER PRIMARY KEY, entry TEXT, timestamp TEXT );";
@@ -44,7 +44,7 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase eDBase, int oldVer, int newVer){
 
-        Log.d("EJLogs", "onUpgrade called ");
+        ejLog( "onUpgrade called ");
 
         if(newVer > oldVer){
             switch (newVer){
@@ -58,7 +58,7 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
     //Adds an entry to the database and returns the _id / number of the entry.
     public int addEntry(String entry){
-        Log.d("EJLogs", "Attempting to add entry");
+        ejLog( "Attempting to add entry");
         String toInsert = "Test entry";
         SQLiteDatabase eDBase = this.getWritableDatabase();
 
@@ -74,7 +74,21 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
         Cursor eCursor = eDBase.query("Entries", columns, null, null, null, null, "_id DESC", Integer.toString(1)); //Gets the most recent entry from the table.
         eCursor.moveToFirst();
-        Log.d("EJLogs", "_id of that entry: " + eCursor.getInt(0));
+        ejLog( "_id of that entry: " + eCursor.getInt(0));
+
+
+        //--- This should only occur on first run:
+        //--- But if we don't do it, we load entries we're already displaying, on that first run:
+        int id = eCursor.getInt(0);
+
+        if(id < earliestLoadedEntryId){
+
+            earliestLoadedEntryId = id;
+            ejLog("earliestLoadedEntryId = " + earliestLoadedEntryId );
+            //Keeping track of the topmost entry we've loaded.
+        }
+        //-----
+
         return eCursor.getInt(0);
     }
 
@@ -89,13 +103,13 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
         eCursor.moveToLast(); //Flipped it to go backwards as the descending order of the selection makes them come out backwards.
 
-        Log.d("EJLogs", "Attempting to retrieve entries... count: " + eCursor.getCount());
+        ejLog( "Attempting to retrieve entries... count: " + eCursor.getCount());
 
         if (eCursor.getCount() < 1)
             return lastEntries; //If this isn't here, the app will crash on its first use*[1], as the cursor is empty
 
         do {
-            //Log.d("EJLogs", eCursor.getString(1)); //*here[1]
+            //ejLog( eCursor.getString(1)); //*here[1]
             int id = eCursor.getInt(0);
             lastEntries.add(new Entry(id, eCursor.getString(1)));
 
@@ -123,10 +137,10 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
         eCursor.moveToFirst();
 
-        Log.d("EJLogs", "Attempting to dump entries... count: " + eCursor.getCount());
+        ejLog( "Attempting to dump entries... count: " + eCursor.getCount());
 
         while(eCursor.moveToNext()){
-            Log.d("EJLogs", eCursor.getString(0) + eCursor.getString(1) + eCursor.getString(2));
+            ejLog( eCursor.getString(0) + eCursor.getString(1) + eCursor.getString(2));
         }
 
     }

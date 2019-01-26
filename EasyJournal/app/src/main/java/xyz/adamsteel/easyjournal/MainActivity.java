@@ -2,6 +2,8 @@ package xyz.adamsteel.easyjournal;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +18,8 @@ import android.net.Uri;
 
 import xyz.adamsteel.easyjournal.dummy.DummyContent;
 import xyz.adamsteel.easyjournal.SettingsFragment;
+
+import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
 
 public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
 
@@ -36,13 +40,14 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
         mainActionBar = getSupportActionBar();
         mainActionBar.setTitle(R.string.bar_title_main);
 
+        mainActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0099ff")));
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //Fragments:
         eFragment = new EntriesFragment();
         sFragment = new SettingsFragment();
-        Log.d("EJLogs", "oncreate");
 
         LoadFragment(eFragment);
 
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
                     mainActionBar.setTitle(R.string.bar_title_main);
 
                     LoadFragment(eFragment);
-                    Log.d("EJLOGS", "Changed to home tab");
+                    //ejLog( "Changed to home tab");
 
                     return true;
 
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
                     mainActionBar.setTitle(R.string.bar_title_settings);
 
                     LoadFragment(sFragment);
-                    Log.d("EJLOGS", "Changed to settings tab");
+                    //ejLog( "Changed to settings tab");
                     return true;
             }
             return false;
@@ -90,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
 
 
     private void LoadFragment(Fragment fragment){
-        Log.d("EJLogs", "LoadFragment");
+        //ejLog( "LoadFragment");
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_frame_layout, fragment);
         transaction.addToBackStack(null);
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
 
     //Anything we want to do the first time the app is run, such as the instructions\intro:
     private void onFirstRun(){
-        Log.d("EJLogs", "App first run");
+        ejLog("App first run");
 
         //Add the 'has run before' boolean to the shared preferences.
         SharedPreferences prefs = getSharedPreferences("xyz.adamsteel.EasyJournal", MODE_PRIVATE);
