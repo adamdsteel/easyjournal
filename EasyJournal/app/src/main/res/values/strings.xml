@@ -25,4 +25,13 @@
     <string name="delete_confirmation">Are you sure you want to delete this entry?</string>
     <string name="delete_yes">Delete</string>
     <string name="delete_no">Cancel</string>
+
+    <!--First run dialog-->
+    <string name="welcome_string">Welcome to EasyJournal - the simplest journalling app there is!\n\n
+    Use EasyJournal like a chat app - no creating new entries or saving to worry about.\n
+        Your thoughts are a continuous stream, so that\'s how we store them.\n
+        Just enter your thoughts naturally, one by one.\n\n
+        To delete an entry, long press it.\n\n
+        Backup\\transfer features coming soon!</string>
+    <string name="okay_button">Okay</string>
 </resources>

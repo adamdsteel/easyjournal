@@ -101,7 +101,7 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
         dbHelper = new ESQLiteHelper(getContext());
         dbHelper.getWritableDatabase();
 
-        ejLog("******** EntriesFragment constructor ******* ");
+        ejLog("**EntriesFragment onCreate()**");
         //testSQL();
 
     }

@@ -22,6 +22,7 @@ import xyz.adamsteel.easyjournal.dummy.DummyContent;
 import xyz.adamsteel.easyjournal.SettingsFragment;
 
 import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
+import xyz.adamsteel.easyjournal.FirstDialogFragment;
 
 public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener, DeleteDialogFragment.DeleteDialogListener {
 
@@ -157,8 +158,8 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
 
 
         //Showing first-run introduction popup:
-        //TODO: Implement this.
-
+        FirstDialogFragment fdFragment = new FirstDialogFragment();
+        fdFragment.show(getSupportFragmentManager(), "firstDialog");
     }
 
     public void emailDeveloper(View view){
