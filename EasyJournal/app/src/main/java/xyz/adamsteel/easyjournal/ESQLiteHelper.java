@@ -147,8 +147,6 @@ public class ESQLiteHelper extends SQLiteOpenHelper {
 
     //Deletes an entry from the database. Cannot be undone at this stage. The int
     public void deleteEntry(int dbID){
-        //TODO: Implement this.
-
         SQLiteDatabase eDBase = this.getWritableDatabase();
         eDBase.delete("Entries", "_id = " + dbID, null);
     }

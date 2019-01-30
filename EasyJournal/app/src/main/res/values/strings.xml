@@ -10,6 +10,7 @@
 
 
     <string name="bug_button_text">Contact the developer</string>
+    <string name="dev_email">adamsteeldev@gmail.com</string>
     <string name="email_subject">Re: EasyJournal app</string>
     <string name="email_contents">[Your message]</string>
 
@@ -18,4 +19,10 @@
     <string name="app_info_text">EasyJournal - An app by Adam Steel.\n\nEasyJournal is the journal app that works like a chat app. Just send your thoughts like a message.
     \n\nYour information is yours - it\'s kept on your device (backup features coming soon).
     </string>
+
+
+    <!-- Delete confirmation -->
+    <string name="delete_confirmation">Are you sure you want to delete this entry?</string>
+    <string name="delete_yes">Delete</string>
+    <string name="delete_no">Cancel</string>
 </resources>

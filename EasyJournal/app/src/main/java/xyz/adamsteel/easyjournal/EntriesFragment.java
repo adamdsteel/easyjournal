@@ -1,6 +1,7 @@
 package xyz.adamsteel.easyjournal;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
+import xyz.adamsteel.easyjournal.DeleteDialogFragment;
 
 
 /**
@@ -161,8 +163,6 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
             }
         });
 
-        //Setting up a long press listener for the recyclerview:
-        //eRecyclerView.addOnItemTouchListener()
 
         //Setting up what to do when we need to load more data for the RecyclerView
         eRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -319,13 +319,31 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
         //Accepts the database ID number as an argument, which we'll use on the database to delete the entry.
         ejLog("EF - A view has been long tapped - db id number" + dbID);
 
+        //Setting the entry to be deleted:
+        Bundle args = new Bundle();
+        args.putInt("toDelete", dbID); //Saving the ID of the entry the user wants to delete.
 
-        dbHelper.deleteEntry(dbID); //TODO: Move this to only be called after a modal dialog confirms it. Obviously.
+        //Create the conformation dialog:
+        DeleteDialogFragment deleteDialogFrag = new DeleteDialogFragment();
+        deleteDialogFrag.setArguments(args);
+        deleteDialogFrag.show(getFragmentManager(), "deleteDialogFrag");
 
-        //Update the UI to show the deletion
-        //TODO - update UI
-        ((MainActivity)getContext()).longPress(dbID); //We alert the activity because the activity has to show the modal dialog.
     }
 
+
+    public void deleteConfirmed(int dbID) {
+        //Delete the entry from the database:
+        dbHelper.deleteEntry(dbID);
+
+        //Delete the entry from the UI section of the database:
+        for (int i = 0; i < contentList.size(); i++) {    //TODO: Consider reloading the currently scrolled-to section from the database. This seems likely to be more bug-proof.
+            if (contentList.get(i).id == dbID) {      //Iterates thru the list to find the one with the right ID, since the ID won't (always) match the index.
+                contentList.remove(i);              //There is probably a way to make this more efficient.
+                break;                              //However, other entries may have already been deleted, so you can't just jump (index.id - current.id) places ahead.
+            }
+        }
+        //Update the UI to show the deletion
+        eAdapter.notifyDataSetChanged();
+    }
 
 }

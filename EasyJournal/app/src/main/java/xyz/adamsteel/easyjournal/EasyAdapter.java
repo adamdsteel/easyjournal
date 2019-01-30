@@ -32,7 +32,7 @@ public class EasyAdapter extends RecyclerView.Adapter<EasyAdapter.EasyViewHolder
             super(v);
             eView = v;
 
-            //Setting an onLongClickListener so we can allow deletion of an entry:
+            //Setting an onLongClickListener so we can detect a long press and allow deletion of an entry:
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View clickedView) {

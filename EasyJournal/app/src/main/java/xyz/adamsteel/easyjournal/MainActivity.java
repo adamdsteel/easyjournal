@@ -1,5 +1,6 @@
 package xyz.adamsteel.easyjournal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,7 +11,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v4.app.DialogFragment;
+import android.app.Dialog;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.view.View;
@@ -21,7 +23,7 @@ import xyz.adamsteel.easyjournal.SettingsFragment;
 
 import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
 
-public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener, DeleteDialogFragment.DeleteDialogListener {
 
     private TextView mTextMessage;
     private android.support.v7.app.ActionBar mainActionBar;
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ejLog("onCreate");
+
         setContentView(R.layout.activity_main);
 
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -58,17 +63,46 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
 
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        ejLog("onStart()");
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        ejLog("onResume");
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        ejLog("onStop");
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        ejLog("onPause");
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        ejLog("onDestroy");
+    }
+
 
         @Override
         public void onFragmentInteraction(Uri uri){
 
         }
 
-        @Override
-        public void longPress(int id){
+    @Override
+    public void longPress(int id) {
 
-        }
-
+    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -128,10 +162,23 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
     }
 
     public void emailDeveloper(View view){
-        Intent contactIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "easyjournal@adamsteel.xyz", null));
+        Intent contactIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getResources().getString(R.string.dev_email), null));
         contactIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.email_subject);
         contactIntent.putExtra(Intent.EXTRA_TEXT, R.string.email_contents);
 
         startActivity(contactIntent);
     }
+
+
+    //Implementing DeleteDialogFragment.DeleteDialogListener
+    //The interface for the delete dialog buttons:
+    @Override
+    public void onDeleteConfirm(int dbID){
+        ((EntriesFragment)eFragment).deleteConfirmed(dbID);
+    }
+
+    public void onDeleteCancel(){
+
+    }
+
 }
