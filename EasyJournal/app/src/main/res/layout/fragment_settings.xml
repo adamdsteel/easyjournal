@@ -7,6 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".SettingsFragment" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Switch
+            android:id="@+id/locationswitch"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:text="@string/location_switch"
+            tools:layout_editor_absoluteX="14dp"
+            tools:layout_editor_absoluteY="72dp" />
+
+        <TextView
+            android:id="@+id/locationDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_description" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/appInfoTextView"
         android:layout_width="0dp"
@@ -30,4 +51,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appInfoTextView" />
+
 </android.support.constraint.ConstraintLayout>
