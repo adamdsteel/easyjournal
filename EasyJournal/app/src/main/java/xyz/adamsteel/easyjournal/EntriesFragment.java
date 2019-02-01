@@ -213,7 +213,6 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
 
                 //Add the entry to the database and the view:
 
-
                 String entryText = inputEditText.getText().toString(); //Gets the text from the input text box and converts it to a String.
 
                 //Update the on-disk database:
@@ -222,9 +221,7 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
                 //Update the in-memory list:
                 contentList.add( new Entry(entryCount, entryText));
 
-
-
-                //inputEditText.clearComposingText();
+                //Clear the text entry field:
                 inputEditText.setText("");
 
                 //Notify the adapter that the data changed so it updates on the screen:
@@ -331,17 +328,19 @@ public class EntriesFragment extends Fragment implements EasyAdapter.AdapterInte
     }
 
 
-    public void deleteConfirmed(int dbID) {
+    public void deleteEntry(int dbID) {
+
         //Delete the entry from the database:
         dbHelper.deleteEntry(dbID);
 
-        //Delete the entry from the UI section of the database:
-        for (int i = 0; i < contentList.size(); i++) {    //TODO: Consider reloading the currently scrolled-to section from the database. This seems likely to be more bug-proof.
-            if (contentList.get(i).id == dbID) {      //Iterates thru the list to find the one with the right ID, since the ID won't (always) match the index.
-                contentList.remove(i);              //There is probably a way to make this more efficient.
-                break;                              //However, other entries may have already been deleted, so you can't just jump (index.id - current.id) places ahead.
+        //Deletes the entry from the display list in memory:
+        for (Entry e : contentList){
+            if(e.id == dbID){
+                contentList.remove(e);
+                break; //Each deletion should only happen to one entry, so we can break here.
             }
         }
+
         //Update the UI to show the deletion
         eAdapter.notifyDataSetChanged();
     }

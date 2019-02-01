@@ -1,0 +1,14 @@
+2019-01-30 20:01:35.962 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: onPause
+2019-01-30 20:01:35.965 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: onStop
+2019-01-30 20:01:35.975 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: onDestroy
+2019-01-30 20:01:35.999 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: EntriesFragment constructor
+2019-01-30 20:01:35.999 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: EntriesFragment constructor
+2019-01-30 20:01:36.003 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: ******** EntriesFragment constructor ******* 
+2019-01-30 20:01:36.004 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: onCreate
+2019-01-30 20:01:36.040 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: EntriesFragment constructor
+2019-01-30 20:01:36.062 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: Attempting to retrieve entries... count: 0
+2019-01-30 20:01:36.069 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: ******** EntriesFragment constructor ******* 
+2019-01-30 20:01:36.086 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: Attempting to retrieve entries... count: 0
+2019-01-30 20:01:36.088 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: onStart()
+2019-01-30 20:01:36.098 3707-3707/xyz.adamsteel.easyjournal D/EJLogs: onResume
+

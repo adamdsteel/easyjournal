@@ -1,6 +1,5 @@
 package xyz.adamsteel.easyjournal;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,18 +10,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.DialogFragment;
-import android.app.Dialog;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.view.View;
 import android.net.Uri;
 
-import xyz.adamsteel.easyjournal.dummy.DummyContent;
-import xyz.adamsteel.easyjournal.SettingsFragment;
-
 import static xyz.adamsteel.easyjournal.EJLogger.ejLog;
-import xyz.adamsteel.easyjournal.FirstDialogFragment;
 
 public class MainActivity extends AppCompatActivity implements EntriesFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener, DeleteDialogFragment.DeleteDialogListener {
 
@@ -175,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements EntriesFragment.O
     //The interface for the delete dialog buttons:
     @Override
     public void onDeleteConfirm(int dbID){
-        ((EntriesFragment)eFragment).deleteConfirmed(dbID);
+        ((EntriesFragment)eFragment).deleteEntry(dbID);
     }
 
     public void onDeleteCancel(){
