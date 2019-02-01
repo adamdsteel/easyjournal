@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="xyz.adamsteel.easyjournal" >
+    package="xyz.adamsteel.easyjournal">
 
     <application
         android:allowBackup="true"
@@ -8,11 +8,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ejicon_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".PinActivity"></activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="sensor"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
