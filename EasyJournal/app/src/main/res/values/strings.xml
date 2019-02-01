@@ -34,8 +34,4 @@
         To delete an entry, long press it.\n\n
         Backup\\transfer features coming soon!</string>
     <string name="okay_button">Okay</string>
-
-    <!--Location stuff-->
-    <string name="location_switch">Store location</string>
-    <string name="location_description">Store the GPS location of each entry</string>
 </resources>
